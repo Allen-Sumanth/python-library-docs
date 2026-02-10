@@ -1,0 +1,10 @@
+site_name: Oceanmaster Documentation
+site_url: https://oceanmaster.dev/docs # Change to actual URL when deployed
+
+theme:
+  name: material
+  palette: 
+    scheme: slate
+
+markdown_extensions:
+  - attr_list
