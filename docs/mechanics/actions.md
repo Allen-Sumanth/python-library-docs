@@ -7,6 +7,16 @@ Bots can move in cardinal directions: `NORTH`, `SOUTH`, `EAST`, `WEST`.
 *   **Cost**: 2 Energy per move.
 *   **Speed**: 1 tile per tick.
 
+??? example "Movement Example"
+    ```python linenums="1"
+    from seamaster.constants import Direction
+    from seamaster.translate import move
+
+    def act(self):
+        # Move North
+        return move(Direction.NORTH)
+    ```
+
 ### Speed Boost (Ability)
 *   **Cost**: 10 Scraps (to add ability).
 *   **Effect**: Movement speed doubled (2 tiles per tick).
@@ -18,6 +28,22 @@ Bots can move in cardinal directions: `NORTH`, `SOUTH`, `EAST`, `WEST`.
 *   **Effect**: Removes algae from board, adds +1 to inventory.
 *   **Energy Cost**: 1 Energy.
 *   **Warning**: Harvesting **Poisonous Algae** kills the bot instantly.
+
+??? example "Harvesting Example"
+    ```python linenums="1" hl_lines="9"
+    from seamaster.constants import Ability
+    from seamaster.translate import perform
+
+    def act(self):
+        # Check if we are on top of algae
+        my_loc = self.ctx.get_location()
+        # Iterate algae list to find one at my location
+        for algae in self.ctx.player_view.visible_entities.algae:
+            if algae.location.x == my_loc.x and algae.location.y == my_loc.y:  # (1)
+                 return perform(Ability.HARVEST)
+    ```
+
+    1.  **Iterate**: Use a loop to check if any algae object shares your current coordinates.
 
 ## Combat (Self-Destruct)
 *   **Action**: `SELFDESTRUCT`
@@ -38,6 +64,16 @@ Bots can move in cardinal directions: `NORTH`, `SOUTH`, `EAST`, `WEST`.
 *   **Effect**: Starts a deposit timer (100 ticks). If effective, converts inventory to score.
 *   **Vulnerability**: While depositing, you are immovable and vulnerable to theft.
 
+??? example "Banking Example"
+    ```python linenums="1"
+    from seamaster.translate import perform_bank
+
+    def act(self):
+        # If we are at a bank we own, deposit
+        if self.ctx.is_at_bank():
+            return perform_bank()
+    ```
+
 ### Lockpick (Ability)
 *   **Action**: `LOCKPICK`
 *   **Requirement**: Must be adjacent to a Bank where an enemy is depositing.
@@ -50,6 +86,17 @@ Bots can move in cardinal directions: `NORTH`, `SOUTH`, `EAST`, `WEST`.
 *   **Cost**: 10 Scraps.
 *   **Effect**: Reveals the `is_poison` status of all algae within a **4-tile radius**. 
 *   **Note**: Without this ability (or proximity), algae status remains "UNKNOWN".
+
+??? example "Scouting Example"
+    ```python linenums="1"
+    from seamaster.constants import Ability
+    from seamaster.translate import perform
+
+    def act(self):
+        # If near unknown algae, use SCOUT
+        if self.ctx.sense_unknown_algae(radius=4):
+            return perform(Ability.SCOUT)
+    ```
 
 !!! important
     Only bots with the **Scout** ability can distinguish Poisonous Algae from Safe Algae. Global vision gives you coordinates, but Scouting gives you safety.

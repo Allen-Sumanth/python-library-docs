@@ -6,6 +6,16 @@ Unlike many other strategy games, Seawars provides **Global Vision**. You have a
 
 Your bot logic receives a `PlayerView` object each tick. This object serves as the single source of truth for the game state.
 
+??? example "Accessing PlayerView"
+    ```python linenums="1"
+    def act(self):
+        # Access the view via self.ctx.player_view
+        view = self.ctx.player_view
+        
+        print(f"Current Tick: {view.tick}")
+        print(f"My Scraps: {view.scraps}")
+    ```
+
 ### Global Fields
 *   **tick**: Current game tick (0 to 1000).
 *   **scraps**: Your current global currency count.
@@ -19,6 +29,20 @@ The `visible_entities` field contains dynamic objects on the board.
 *   **Enemies (`visible_entities.enemies`)**: A list of **ALL** enemy bots currently on the board. You know their ID, Location, Scraps held, and Abilities.
 *   **Scraps (`visible_entities.scraps`)**: A list of scraps dropped on the ground from destroyed bots.
 
+??? example "Filtering Enemies"
+    ```python linenums="1"
+    from oceanmaster.constants import Ability
+
+    def act(self):
+        enemies = self.ctx.player_view.visible_entities.enemies
+        
+        # Find enemies carrying algae
+        rich_enemies = [e for e in enemies if e.algae_held > 0]
+        
+        # Find enemies with SCOUT ability
+        scouts = [e for e in enemies if Ability.SCOUT in e.abilities]
+    ```
+
 ### Permanent Entities (Map Features)
 The `permanent_entities` field contains static or semi-static map features.
 
@@ -30,7 +54,7 @@ The `permanent_entities` field contains static or semi-static map features.
 ### Structure Reference
 The `PlayerView` object follows this structure:
 
-```json
+```json linenums="1"
 {
   "tick": "int",
   "scraps": "int",
@@ -96,3 +120,21 @@ To reveal the `is_poison` status, you must use the **Scout** ability.
 
 !!! important
     This is the only "Hidden Information" in the game. Enemy movement and map layout are fully visible.
+
+??? example "Safe Harvesting Logic"
+    ```python linenums="1"
+    from seamaster.constants import AlgaeType
+    
+    def is_safe_to_harvest(self, algae):
+        # Only harvest if CONFIRMED safe
+        if algae.is_poison == AlgaeType.FALSE:
+            return True
+        return False
+        
+    def act(self):
+        # Example: iterate visible algae and check safety
+        for algae in self.ctx.player_view.visible_entities.algae:
+            if self.is_safe_to_harvest(algae):
+                # Go harvest it...
+                pass
+    ```

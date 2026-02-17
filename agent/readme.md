@@ -5,9 +5,8 @@ You are a technical documentation engineer.
 
 You convert internal engine and SDK information into **player-facing documentation** for a competitive programming game called **Seawars**.
 
-You are NOT explaining source code.
 You are writing a player manual for programmers participating in the game.
-
+Additionally, you are allowed to explain source code for the user to understand how it works behind the scenes.
 ---
 
 ## Objective
@@ -19,17 +18,6 @@ Generate a complete MkDocs documentation website that enables a programmer with 
 4. Develop strategies
 
 The documentation must prioritize clarity, correctness, and usability over completeness of internal implementation details.
-
----
-
-## Required Output
-You must produce:
-
-- A complete directory structure
-- A valid `mkdocs.yml`
-- Multiple Markdown files (small focused pages)
-- Relative links between pages
-- Logical navigation hierarchy
 
 Never place multiple major sections into one file.
 
@@ -45,6 +33,10 @@ All information MUST come only from:
 - `./sandbox.md`
 - `./user_code.md`
 - `./python_lib.md`
+- `./code-blocks.md`
+- './samples/'
+- './src/'
+- './oceanmaster-coderunner-master'
 
 No external assumptions.
 
@@ -80,62 +72,7 @@ Never expose internal architecture or file names to players.
 
 ## Documentation Layers (Strict Separation)
 
-You must keep these layers separate:
-
-1. Learning Guide — tutorial and onboarding
-2. Game Rules — formal mechanics and definitions
-3. SDK Guide — how to code a bot
-4. Strategy Guides — examples and reasoning
-5. Debugging & Sandbox — constraints and runtime behavior
-6. Reference — lookup tables and APIs
-
-Do NOT mix tutorial explanations inside reference pages.
-
----
-
-## Navigation Structure
-
-Create pages covering:
-
-### Introduction
-- Welcome
-- Getting Started
-- Game Philosophy
-
-### Game Mechanics
-- Game Loop
-- Board
-- Bots
-- Entities (Banks, Algaes, etc.)
-- Abilities
-- Win Conditions
-
-### Writing Bots
-- SDK Introduction
-- Bot Structure
-- Submitting Code
-- API Usage
-
-### Guides
-- Example Bots
-- Strategy Walkthroughs
-
-### Runtime & Sandbox
-- Execution Environment
-- Limits
-- Errors
-- Logs
-- Edge Cases
-
-### Reference
-- API Reference
-- Ability Reference
-
-### Other
-- FAQ
-- Glossary
-
----
+Preserve the current documentation folder structure. If modifying the structure will better help the documentation process in any way, you may modify it.
 
 ## MkDocs Usage Rules
 
@@ -206,6 +143,8 @@ Create a `TODO` subsection explaining what information is missing and why it mat
 Correctness is more important than completeness.
 
 Never invent behavior to make the documentation look complete.
+
+Document all the changes made in this file, so that future agents understand what has been done, and what should be done.
 
 # Current status and Action to be done
 
@@ -307,4 +246,20 @@ Based on user feedback, the following points have been clarified:
 4.  **Backend Logic Assimilation (Perception)**:
     *   **Context**: Documentation incorrectly described a "Fog of War" mechanic. Backend analysis (`dto.go`, `player_view.py`) confirmed **Global Vision** for all entities except Algae Poison Status.
     *   **Fix**: Rewrote **`docs/mechanics/perception.md`** to document the `PlayerView` object structure and included a full JSON schema. Updated `entities.md`, `actions.md`, `glossary.md`, and `bots.md` to reflect that enemies and algae locations are always visible, and `SCOUT` is only needed for poison detection.
+
+5.  **Final Polish**:
+    *   **Context**: Users requested a "working script" for the tutorial and more clarity on customization.
+    *   **Action**: Rewrote `docs/sdk/first_bot.md` to use **Template Inheritance** (Forager) and added a conclusion highlighting the library's flexible hierarchy.
+
+6.  **Navigation Restructure**:
+    *   **Context**: User requested a more logical flow for bot development.
+    *   **Action**: Consolidated "Workflow" pages into the "SDK" section and reordered them (Setup -> Writing -> First Bot -> Debugging -> Submission -> API).
+
+7.  **Correction**:
+    *   **Context**: User pointed out that local execution is not supported/intended.
+    *   **Action**: Updated `docs/sdk/first_bot.md` to remove `run_game.py` references and point to the Website Submission workflow.
+
+8.  **Visual Polish**:
+    *   **Context**: User requested advanced code block bells and whistles.
+    *   **Action**: Enabled Material for MkDocs features (highlighting, annotations, titles) and applied them to `first_bot.md` and `actions.md`.
 

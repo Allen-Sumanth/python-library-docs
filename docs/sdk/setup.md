@@ -9,7 +9,7 @@ To play Seawars, you need to write a Python script that uses the `oceanmaster` l
 ## Project Structure
 A typical bot project looks like this:
 
-```
+```text
 my_bot/
 ├── main.py            # Entry point (provided by template)
 ├── my_strategy.py     # Your custom logic

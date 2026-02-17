@@ -5,10 +5,10 @@ A bot consists of two parts: the **Brain** (Logic) and the **Birth** (Spawn Poli
 ## 1. The Brain (`BotController`)
 You define a class that inherits from `BotController`. The `act()` method is called every tick.
 
-```python
-from oceanmaster.botbase import BotController
-from oceanmaster.constants import Ability, Direction
-from oceanmaster.translate import move
+```python linenums="1"
+from seamaster.botbase import BotController
+from seamaster.constants import Ability, Direction
+from seamaster.translate import move
 
 class MyHarvester(BotController):
     # Define abilities this bot needs
@@ -29,7 +29,7 @@ class MyHarvester(BotController):
 ## 2. The Birth (`spawn_policy`)
 You must tell the engine **when** to correct bots.
 
-```python
+```python linenums="1"
 def spawn_policy(api):
     spawn_list = []
     tick = api.get_tick()
@@ -46,7 +46,7 @@ def spawn_policy(api):
 ## State Management
 You can store state in your bot class `__init__`.
 
-```python
+```python linenums="1"
 class Patroller(BotController):
     def __init__(self, ctx):
         super().__init__(ctx)
