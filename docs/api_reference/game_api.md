@@ -4,6 +4,7 @@ Accessible in `spawn_policy(api)`.
 
 ### Global Information
 *   `get_tick()`: Returns the current tick of the game (int).
+*   `get_max_energy()`: Returns the maximum energy a bot can hold (int).
 *   `get_scraps()`: Returns the total scraps available to you (int).
 *   `get_my_bots()`: Returns a list of all bots owned by you (`list[Bot]`).
 
